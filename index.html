@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111827" />
+  <title>KPI Studio — 목표와 실적 대시보드</title>
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="프로젝트 정보">
+      <div class="logo"><span class="logo-mark">◈</span> METRIC<span class="logo-light">/</span>STUDIO</div>
+      <div class="side-label">WORKSPACE</div>
+      <div class="side-item active"><span class="side-icon">▦</span> 성과 대시보드 <span class="side-dot"></span></div>
+      <div class="side-note"><span class="online-dot"></span> 데모 워크스페이스<br /><small>외부 DB 연결 없음</small></div>
+      <div class="side-footer">KPI STUDIO <span>v1.0</span></div>
+    </aside>
+    <main class="content">
+      <header class="topbar"><div class="breadcrumb">WORKSPACE <span>/</span> OVERVIEW</div><span class="top-date">2026 DEMO DATA</span></header>
+      <div class="page-head">
+        <div><p class="eyebrow">PERFORMANCE OVERVIEW</p><h1>성과 대시보드<span class="period"> / KPI</span></h1><p class="subtitle">부서별 목표와 실제 성과를 한눈에 비교하세요.</p></div>
+        <span class="badge" id="mode-badge">● 샘플 모드</span>
+      </div>
+      <section class="panel filter-panel" aria-label="필터">
+        <div class="filter-heading"><span class="section-index">01</span><strong>데이터 필터</strong><span class="helper">월과 부서를 선택하여 분석 범위를 좁히세요.</span></div>
+        <div class="filter-row"><label>기준 월<select id="month-filter"><option value="all">전체 월</option></select></label><label>부서<select id="department-filter"><option value="all">전체 부서</option></select></label><button id="clear-filter" class="btn ghost" type="button">↺ 필터 초기화</button></div>
+      </section>
+      <section class="stats" aria-label="KPI 합계">
+        <article class="stat-card"><span class="stat-label">목표 합계 <span class="circle-icon">◎</span></span><p id="total-target" class="stat-number">—</p><span class="stat-foot">선택한 기간 · 부서 기준</span><div class="accent navy"></div></article>
+        <article class="stat-card"><span class="stat-label">실적 합계 <span class="circle-icon">↗</span></span><p id="total-actual" class="stat-number">—</p><span class="stat-foot">누적 실적</span><div class="accent teal"></div></article>
+        <article class="stat-card rate-card"><span class="stat-label">목표 달성률 <span class="circle-icon">◉</span></span><p id="achievement-rate" class="stat-number">—</p><span class="stat-foot" id="rate-caption">실적 합계 ÷ 목표 합계 × 100</span><div class="accent amber"></div></article>
+      </section>
+      <section class="panel table-panel" aria-labelledby="table-title">
+        <div class="section-heading"><div><span class="section-index">02</span><h2 id="table-title">성과 근거표</h2><span class="record-count" id="record-count">0 records</span></div><span class="helper">행별 달성률은 참고용이며 총 달성률은 합계 기준입니다.</span></div>
+        <div id="feedback" role="status" aria-live="polite" class="feedback" hidden></div>
+        <div class="table-scroll"><table><thead><tr><th>기준 월</th><th>부서</th><th>성과 지표</th><th class="number">목표</th><th class="number">실적</th><th class="number">달성률</th><th>관리</th></tr></thead><tbody id="results-body"></tbody></table></div>
+        <div id="empty-state" class="empty-state" hidden><div class="empty-icon">⌕</div><strong>해당 조건에 맞는 데이터가 없습니다.</strong><p>다른 월이나 부서를 선택하거나 새 기록을 추가해 주세요.</p></div>
+        <div class="table-footer">표시된 데이터만 합계에 반영됩니다. <span>데이터 단위: 건수 (가상 샘플)</span></div>
+      </section>
+      <section class="panel entry-panel" aria-labelledby="entry-title">
+        <div class="section-heading"><div><span class="section-index">03</span><h2 id="entry-title">기록 입력</h2></div><span class="helper">추가·수정 후에도 직접 저장하기 전까지 브라우저에 보관되지 않습니다.</span></div>
+        <form id="record-form" novalidate><input id="edit-id" type="hidden" /><div class="form-grid"><label>기준 월<input id="form-month" type="month" required value="2026-10" /></label><label>부서<input id="form-department" type="text" maxlength="50" required placeholder="예: 마케팅" /></label><label>성과 지표<input id="form-metric" type="text" maxlength="80" required placeholder="예: 신규 리드" /></label><label>목표<input id="form-target" type="number" min="0" step="any" required placeholder="0" /></label><label>실적<input id="form-actual" type="number" min="0" step="any" required placeholder="0" /></label><button class="btn primary" id="submit-button" type="submit">+ 기록 추가</button></div><p class="form-error" id="form-error" role="alert" hidden></p><button id="cancel-edit" type="button" class="btn link" hidden>수정 취소</button></form>
+      </section>
+      <section class="bottom-actions" aria-label="데이터 관리"><div><strong>내 데이터 관리</strong><p>샘플 데이터는 실제 데이터베이스로 전송되지 않습니다.</p></div><div class="bottom-buttons"><button class="btn ghost" id="reset-button" type="button">샘플로 초기화</button><button class="btn dark" id="save-button" type="button">▣ 이 브라우저에 저장</button></div></section>
+      <footer class="legal">LOCAL DEMO MODE <span>·</span> NO SUPABASE CONNECTION <span>·</span> NO AUTO SYNC</footer>
+    </main>
+  </div>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
